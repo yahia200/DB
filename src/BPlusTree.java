@@ -3,9 +3,27 @@
 import java.util.*;
 
 public class BPlusTree {
+
+
+  boolean d = false;
+  String colName;
+  String name;
   int m;
   InternalNode root;
+
+  public String getColName() {
+    return colName;
+  }
+
   LeafNode firstLeaf;
+
+  public BPlusTree(int m, String name, String colName) {
+    this.m = m;
+    this.root = null;
+    this.name =  name;
+    this.colName = colName;
+
+  }
 
   // Binary search program
   private int binarySearch(DictionaryPair[] dps, int numPairs, int t) {
@@ -17,7 +35,7 @@ public class BPlusTree {
         return a.compareTo(b);
       }
     };
-    return Arrays.binarySearch(dps, 0, numPairs, new DictionaryPair(t, 0), c);
+    return Arrays.binarySearch(dps, 0, numPairs, new DictionaryPair(t, null), c);
   }
 
   // Find the leaf node
@@ -70,7 +88,7 @@ public class BPlusTree {
     return i;
   }
 
-  // Get the mid point
+  // Get the mid-point
   private int getMidpoint() {
     return (int) Math.ceil((this.m + 1) / 2.0) - 1;
   }
@@ -274,7 +292,10 @@ public class BPlusTree {
     return halfKeys;
   }
 
-  public void insert(int key, double value) {
+  public void insert(Object k, Row value) {
+    if ( k instanceof Double)
+      d= true;
+    int key = keyToInt(k);
     if (isEmpty()) {
 
       LeafNode ln = new LeafNode(this.m, new DictionaryPair(key, value));
@@ -338,8 +359,8 @@ public class BPlusTree {
     }
   }
 
-  public Double search(int key) {
-
+  public Row search(Object k) {
+    int key = keyToInt(k);
     if (isEmpty()) {
       return null;
     }
@@ -356,9 +377,10 @@ public class BPlusTree {
     }
   }
 
-  public ArrayList<Double> search(int lowerBound, int upperBound) {
-
-    ArrayList<Double> values = new ArrayList<Double>();
+  public ArrayList<Row> search(Object lBound, Object uBound) {
+    int lowerBound = keyToInt(lBound);
+    int upperBound = keyToInt(uBound);
+    ArrayList<Row> values = new ArrayList<Row>();
 
     LeafNode currNode = this.firstLeaf;
     while (currNode != null) {
@@ -379,11 +401,6 @@ public class BPlusTree {
     }
 
     return values;
-  }
-
-  public BPlusTree(int m) {
-    this.m = m;
-    this.root = null;
   }
 
   public class Node {
@@ -540,9 +557,9 @@ public class BPlusTree {
 
   public class DictionaryPair implements Comparable<DictionaryPair> {
     int key;
-    double value;
+    Row value;
 
-    public DictionaryPair(int key, double value) {
+    public DictionaryPair(int key, Row value) {
       this.key = key;
       this.value = value;
     }
@@ -558,20 +575,20 @@ public class BPlusTree {
     }
   }
 
-  public static void main(String[] args) {
-    BPlusTree bpt = null;
-    bpt = new BPlusTree(3);
-    bpt.insert(5, 33);
-    bpt.insert(15, 21);
-    bpt.insert(25, 31);
-    bpt.insert(35, 41);
-    bpt.insert(45, 10);
+  public int keyToInt(Object key){
+      if (key instanceof String){
+        int ascii = 0;
+        for(int i=0;i<((String)key).length();i++) {
+          ascii += (int)((String)key).charAt(i);
+        }
+      }
 
-    if (bpt.search(15) != null) {
-      System.out.println("Found");
-    } else {
-      System.out.println("Not Found");
-    }
-    ;
+      if ( key instanceof Double){
+        return (int)(((double)key)*1000);
+      }
+      if(d)
+        return (int)key*1000;
+      return (int)key;
   }
+
 }

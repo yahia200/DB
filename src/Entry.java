@@ -15,4 +15,6 @@ public abstract class Entry {
 
 
     public abstract Entry duplicate(Object o);
+
+    public abstract int getValue();
 }

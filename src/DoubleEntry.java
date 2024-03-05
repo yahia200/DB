@@ -1,8 +1,8 @@
 public class DoubleEntry extends Entry {
-    private Double value;
+    private double value;
 
-    public Double getValue() {
-        return value;
+    public int getValue() {
+        return (int)value;
     }
 
     public void setValue(Double value) {

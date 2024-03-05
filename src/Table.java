@@ -1,11 +1,20 @@
 import java.util.Hashtable;
-import java.util.Set;
 import java.util.Vector;
 
 public class Table {
     private String PK;
     private String name;
     private Vector<Row> rows = new Vector<Row>();
+    private Vector<BPlusTree> indices = new Vector<BPlusTree>();
+
+    public void setIndecies(Vector<BPlusTree> indecies) {
+
+        this.indices = indecies;
+    }
+
+    public Vector<BPlusTree> getIndecies() {
+        return indices;
+    }
 
     private Vector<Entry> attributes = new Vector<Entry>();
 
@@ -93,6 +102,7 @@ public class Table {
                     }
                 }
             }
+            updateIndex(ht, row);
             rows.add(row);
         }
     }
@@ -104,5 +114,36 @@ public class Table {
             res += row.toString() +"\n" ;
         }
         return res.substring(0,res.length()-2);
+    }
+
+
+    public BPlusTree createIndex(String   strColName,
+                                String   strIndexName){
+            BPlusTree tree = new BPlusTree(4, strIndexName, strColName);
+            for(Row row:rows){
+               Entry e = row.getEntry(strColName);
+               tree.insert(e.getValue(),row);
+            }
+            indices.add(tree);
+            return tree;
+
+    }
+
+    public void printInd(){
+        for (BPlusTree tree : indices){
+            System.out.println(tree.search(0,0.96));
+        }
+    }
+
+    public void updateIndex(Hashtable<String, Object> ht, Row row){
+        Object[] keys = ht.keySet().toArray();
+        for (Object key : keys) {
+            for (BPlusTree index : indices) {
+                if ((String) key == index.getColName()) {
+                    index.insert(ht.get(key), row);
+                    break;
+                }
+            }
+        }
     }
 }

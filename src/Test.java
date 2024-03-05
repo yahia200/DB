@@ -36,4 +36,21 @@ public class Test {
             System.out.println(e.getMessage());
         }
     }
+
+    public void createIndex(String   strTableName,
+                            String   strColName,
+                            String   strIndexName) throws DBAppException{
+        for (Table table : tables) {
+            if (table.getName() == strTableName)
+                table.createIndex(strColName, strIndexName);
+        }
+
+    }
+
+    public void printInd(){
+        for (Table table : tables) {
+                table.printInd();
+        }
+    }
+
 }

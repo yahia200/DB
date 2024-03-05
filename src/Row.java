@@ -32,4 +32,12 @@ public class Row {
         }
         return res.substring(0,res.length()-1);
     }
+
+    public Entry getEntry(String name){
+        for (Entry e : columns){
+            if(name == e.getName())
+                return e;
+        }
+        return null;
+    }
 }

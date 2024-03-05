@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9876104e-982c-440d-93dc-dafa90c09dc7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DB.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DBApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DBAppException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DoubleEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Entry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/IntEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Row.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SQLTerm.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/StrEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Table.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BPlusTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BPlusTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DoubleEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DoubleEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IntEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IntEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Row.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Row.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StrEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StrEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +23,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2dGAZbAUNYKAtPmi4k58Rs3Aq2h" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
