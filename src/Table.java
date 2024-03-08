@@ -147,10 +147,12 @@ public class Table {
         }
     }
 
-   public void DeleteTuple (Object value){
-        for (Row row : rows) {
-            if (value.equals(row.PK)) {
-                rows.remove(row.PK);
+ public void deleteFromTable(Hashtable<String,Object> htblColNameValue) throws DBAppException{
+        for (int i = 0; i < this.getRows().size(); i++) {
+            if ((htblColNameValue.get(this.getPK())).equals(this.rows.get(i).PK)) {
+                rows.remove(i);
+                System.out.println("Row Deleted");
+                break;
             }
         }
     }
