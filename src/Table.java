@@ -146,4 +146,12 @@ public class Table {
             }
         }
     }
+
+   public void DeleteTuple (Object value){
+        for (Row row : rows) {
+            if (value.equals(row.PK)) {
+                rows.remove(row.PK);
+            }
+        }
+    }
 }
