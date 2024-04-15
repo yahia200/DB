@@ -131,7 +131,7 @@ public class Table {
 
     public void printInd(){
         for (BPlusTree tree : indices){
-            System.out.println(tree.search(0,0.96));
+            System.out.println(tree.search(0,2));
         }
     }
 
