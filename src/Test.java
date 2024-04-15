@@ -22,7 +22,7 @@ public class Test {
     }
 
     public void insertIntoTable(String strTableName,
-                                       Hashtable<String,Object>  htblColNameValue) throws DBAppException {
+                                       Hashtable<String,Object>  htblColNameValue) throws Exception {
         try {
 
 

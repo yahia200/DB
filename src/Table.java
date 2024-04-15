@@ -2,10 +2,20 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 public class Table {
+    private static final int MAX_PAGE_SIZE = 3;
     private String PK;
     private String name;
     private Vector<Row> rows = new Vector<Row>();
     private Vector<BPlusTree> indices = new Vector<BPlusTree>();
+    public Vector<Page> pages = new Vector<Page>();
+
+    //! Test
+    public void pp(){
+        for (Page page : pages){
+            System.out.println(page.toString());
+        }
+    }
+
 
     public void setIndecies(Vector<BPlusTree> indecies) {
 
@@ -56,6 +66,7 @@ public class Table {
         this.name = name;
         this.PK = PK;
         this.htblColNameType = htblColNameType;
+        this.pages.add(new Page(1));
         createTable(htblColNameType);
     }
 
@@ -87,7 +98,8 @@ public class Table {
         return false;
     }
 
-    void insert(Hashtable<String, Object> ht) throws DBAppException {
+    void insert(Hashtable<String, Object> ht) throws Exception {
+        Page page = pages.get(pages.size()-1);
         Object[] keys = ht.keySet().toArray();
         if (duplicateRow(ht.get(PK))){
             throw new DBAppException("Duplicate PK");
@@ -104,6 +116,15 @@ public class Table {
             }
             updateIndex(ht, row);
             rows.add(row);
+            if(page.size( ) >= MAX_PAGE_SIZE){
+                System.out.println("Page full, creating a new one.");
+                page = new Page(pages.size()+1);
+                pages.add(page);
+            }
+            page.addRow(row);
+            String filePath = this.name + (pages.indexOf(page)+1) + ".class";
+            page.setFilePath(filePath);
+            page.save();
         }
     }
 
@@ -151,7 +172,7 @@ public class Table {
         for (int i = 0; i < this.getRows().size(); i++) {
             if ((htblColNameValue.get(this.getPK())).equals(this.rows.get(i).PK)) {
                 rows.remove(i);
-                System.out.println("Row Deleted");
+                
                 break;
             }
         }

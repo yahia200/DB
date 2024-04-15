@@ -22,6 +22,6 @@ public class IntEntry extends Entry {
     @Override
     public String toString() {
 
-        return value+"";
+        return this.value+"";
     }
 }

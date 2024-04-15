@@ -8,7 +8,8 @@ public class Main {
 
 
 
-    public static void main(String[] args) throws DBAppException {
+    @SuppressWarnings({ "removal", "unchecked", "rawtypes" })
+    public static void main(String[] args) throws Exception {
         Test test = new Test();
         String strTableName = "Student";
 
@@ -52,6 +53,7 @@ public class Main {
             System.out.println(t.toString());
         else
             System.out.println("table is null");
+        t.pp();
 
     }
 

@@ -1,4 +1,6 @@
-public abstract class Entry {
+import java.io.Serializable;
+
+public abstract class Entry implements Serializable{
     private String name;
 
     public Entry(String name) {
