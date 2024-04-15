@@ -146,4 +146,14 @@ public class Table {
             }
         }
     }
+
+ public void deleteFromTable(Hashtable<String,Object> htblColNameValue) throws DBAppException{
+        for (int i = 0; i < this.getRows().size(); i++) {
+            if ((htblColNameValue.get(this.getPK())).equals(this.rows.get(i).PK)) {
+                rows.remove(i);
+                System.out.println("Row Deleted");
+                break;
+            }
+        }
+    }
 }
