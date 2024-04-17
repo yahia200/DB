@@ -177,4 +177,29 @@ public class Table {
             }
         }
     }
+     void updateTable(String strClusteringKeyValue, Hashtable<String, Object> htblColNameValue) throws DBAppException {
+        boolean rowFound = false;
+
+        for (Row row : rows) {
+            if (strClusteringKeyValue.equals(row.PK)){
+                rowFound = true;
+                for (Map.Entry<String, Object> entry : htblColNameValue.entrySet()) {
+                    String colName = entry.getKey();
+                    Object colValue = entry.getValue();
+
+                    for (Entry attribute : attributes) {
+                        if (colName.equals(attribute.getName())) {
+                            row.update(attribute, colValue);
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        if (!rowFound) {
+            throw new DBAppException("Row with clustering key value " + strClusteringKeyValue + " not found in table.");
+        }
+    }
 }

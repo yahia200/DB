@@ -41,4 +41,18 @@ public class Row implements Serializable{
         }
         return null;
     }
+     public void update(Entry attribute, Object colValue) {
+        for (Entry column : columns) {
+            if (column.getName().equals(attribute.getName())) {
+                if (colValue == "java.lang.Integer") {
+                   column=new IntEntry(column.getName(),(int)colValue);
+                } else if (colValue == "java.lang.String") {
+                    column=new StrEntry(column.getName(),(String)colValue);
+                } else if (colValue == "java.lang.double") {
+                    column=new DoubleEntry(column.getName(),(Double)colValue);
+                }
+                break;
+            }
+        }
+    }
 }
