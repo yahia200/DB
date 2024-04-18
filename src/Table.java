@@ -159,14 +159,16 @@ public class Table {
                 return true;
             }
         }
+        if (nextPage != null)
+            return false;
 
-        if (page.size() >= MAX_PAGE_SIZE && nextPage == null){
+        if (page.size() >= MAX_PAGE_SIZE){
             Page newPage = new Page(page.getNum()+1, this.name);
             newPage.save();
             return false;
         }
             
-        if ((page.size() < MAX_PAGE_SIZE) && nextPage == null){
+        if ((page.size() < MAX_PAGE_SIZE)){
             Row newRow = getNewRow(ht);
             addToPage(page.size(), newRow, page);
             updateIndex(ht, newRow);
