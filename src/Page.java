@@ -6,14 +6,14 @@ import java.io.Serializable;
 import java.util.Vector;
 
 public class Page implements Serializable {
-    public int num;
-    public Vector<Row> rows = new Vector<>();
-    public String filePath;
+    private int num;
+    private Vector<Row> rows = new Vector<>();
+    private String filePath;
 
     public Page(int num, String tableName) {
         this.rows = new Vector<>();
         this.num=num;
-        this.filePath= tableName+  "_" + num + ".ser";
+        this.filePath= tableName+  "_" + num + ".class";
     }
 
     public void setFilePath(String filePath) {
@@ -24,6 +24,14 @@ public class Page implements Serializable {
         rows.add(row);
             
 
+    }
+
+    public void setNum(int num){
+        this.num=num;
+    }
+
+    public String getPath(){
+        return  filePath;
     }
 
 

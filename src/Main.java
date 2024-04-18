@@ -23,7 +23,7 @@ public class Main {
         htblColNameType.put("gpa", "java.lang.double");
         Table t =test.createTable( strTableName, "id", htblColNameType );
         // //test.createIndex( strTableName, "gpa", "gpaIndex" );
-        // Hashtable htblColNameValue = new Hashtable( );
+        Hashtable htblColNameValue = new Hashtable( );
         // htblColNameValue.put("id", new Integer( 2 ));
         // htblColNameValue.put("name", new String("Ahmed Noor" ) );
         // htblColNameValue.put("gpa", new Double( 0.95 ) );
@@ -44,12 +44,13 @@ public class Main {
         // htblColNameValue.put("gpa", new Double( 1.5 ) );
         // test.insertIntoTable( strTableName , htblColNameValue );
         // htblColNameValue.clear( );
-        // htblColNameValue.put("id", new Integer( 7 ));
-        // htblColNameValue.put("name", new String("Zaky Noor" ) );
-        // htblColNameValue.put("gpa", new Double( 0.88 ) );
-        // test.insertIntoTable( strTableName , htblColNameValue );
+        htblColNameValue.put("id", new Integer( 16 ));
+        htblColNameValue.put("name", new String("Zaky16" ) );
+        htblColNameValue.put("gpa", new Double( 0.88 ) );
+        test.insertIntoTable( strTableName , htblColNameValue );
         test.tables.get(0).pp();
         
     }
+
 
 }

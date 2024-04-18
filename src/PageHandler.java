@@ -1,3 +1,4 @@
+import java.io.File;
 public class PageHandler {
     private String name;
 
@@ -10,7 +11,7 @@ public class PageHandler {
     public Page loadNextPage(Page  p){
         Page page = null;
         try{
-            String filePath = this.name + "_" + (""+(p.getNum()+1)) + ".ser";
+            String filePath = this.name + "_" + (""+(p.getNum()+1)) + ".class";
             page = Page.load(filePath);
         }catch(Exception e){
             //System.out.println("Cant load  next page");
@@ -23,7 +24,7 @@ public class PageHandler {
     public Page loadPrevPage(Page  p){
         Page page = null;
         try{
-            String filePath = this.name + "_" + (""+(p.getNum()-1)) + ".ser";
+            String filePath = this.name + "_" + (""+(p.getNum()-1)) + ".class";
             page = Page.load(filePath);
         }catch(Exception e){
             //System.out.println("Cant load  prev page");
@@ -35,7 +36,7 @@ public class PageHandler {
     public Page loadFirstPage(){
         Page page = null;
         try{
-            String filePath = this.name+ "_" + "1" + ".ser";
+            String filePath = this.name+ "_" + "1" + ".class";
             page = Page.load(filePath);
         }catch(Exception ex){
             System.out.println(this.name);
@@ -48,4 +49,23 @@ public class PageHandler {
         this.name=name;
     }
     
+
+    public void deletePage(Page page) throws Exception{
+        Page nextPage = loadNextPage(page);
+        if (page.getNum() == 1 && nextPage == null){
+            return;
+        }
+
+        int num = page.getNum();
+        File pageToDelete = new File(page.getPath());
+        pageToDelete.delete();
+
+        while (nextPage != null){
+            page = nextPage;
+            page.setNum(num++);
+            page.save();
+            nextPage = loadNextPage(page);
+        }
+        page.setNum(page.getNum()-1);
+    }
 }

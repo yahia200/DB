@@ -4,7 +4,7 @@ import java.util.*;
 public class Table {
     private CSVHandler csv = new CSVHandler();
     private PageHandler ph = new PageHandler(this.name);
-    private static final int MAX_PAGE_SIZE = 10;
+    private static final int MAX_PAGE_SIZE = 2;
     private String PK;
     private String name;
     private Vector<BPlusTree> indices = new Vector<BPlusTree>();
@@ -112,7 +112,7 @@ public class Table {
         }
         
         Row lastRow = page.getLastRow();
-
+ 
         
         if (nextPage == null) {
             Page newPage = new Page(page.getNum()+1, this.name);
@@ -120,7 +120,9 @@ public class Table {
             nextPage = ph.loadNextPage(page);
 
         }
-
+        page.getRows().remove(page.size()-1);
+        page.addRow(index, row);
+        page.save();
         addToPage(0, lastRow, nextPage);
     }
 
@@ -157,8 +159,14 @@ public class Table {
                 return true;
             }
         }
+
+        if (page.size() >= MAX_PAGE_SIZE && nextPage == null){
+            Page newPage = new Page(page.getNum()+1, this.name);
+            newPage.save();
+            return false;
+        }
             
-        if (nextPage == null){
+        if ((page.size() < MAX_PAGE_SIZE) && nextPage == null){
             Row newRow = getNewRow(ht);
             addToPage(page.size(), newRow, page);
             updateIndex(ht, newRow);
