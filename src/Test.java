@@ -30,6 +30,14 @@ public class Test {
 			// TODO: handle exception
 		}
 	}
+    public void deleteFromTable(String strTableName, Hashtable<String,Object> ht) throws DBAppException{
+        for (Table table : tables) {
+            if (table.getName().equals(strTableName)) {
+                table.deleteFromTable(ht);
+                break;
+            }
+        }
+    }
 
     public void insertIntoTable(String strTableName,
                                        Hashtable<String,Object>  htblColNameValue) throws Exception {

@@ -281,6 +281,44 @@ public class Table {
 
     }
 
+    public void deleteFromTable(Hashtable<String, Object> ht) throws DBAppException {
+        System.out.println("ht: " + ht);
+        Iterator<Object> iterator = ht.values().iterator();
+        while (iterator.hasNext()) {
+            Object value = iterator.next();
+            System.out.println("Deleting rows with value: " + value);
+            Page page = ph.loadFirstPage();
+            while (page != null){
+            for (int i = 0; i < page.getRows().size(); i++) {
+                for (int j = 0; j < this.attributes.size(); j++) {
+                    if (value.toString().equals(page.getRows().get(i).getColumns().get(j).toString())) {
+                        System.out.println("Deleting row with index: " + i);
+                        page.getRows().remove(i);
+                       // i--;
+                        System.out.println("Row Deleted");
+                        break;
+//                    } else {
+//                        String msg = "Error, no field found";
+//                        throw new DBAppException(msg);
+//                    }
+
+                    }
+                }
+            }
+                System.out.println("Rows after deletion: " + page.getRows().toString());
+
+                page = ph.loadNextPage(page);
+
+            }
+        }
+    }
+//            public void deleteFromTable(Hashtable<String,Object> htblColNameValue) throws DBAppException{
+//                for (int i = 0; i < this.getRows().size(); i++) {
+//                    if ((htblColNameValue.get(this.getPK())).equals(this.rows.get(i).PK)) {
+//                        rows.remove(i);
+//
+//                        break;
+//                    }}}
 
 
 
