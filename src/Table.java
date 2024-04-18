@@ -10,6 +10,7 @@ public class Table {
     private Vector<Row> rows = new Vector<Row>();
     private Vector<BPlusTree> indices = new Vector<BPlusTree>();
     public Vector<Page> pages = new Vector<Page>();
+    Hashtable<String, String> htblColNameType;
 
     //! Test
     public void pp(){
@@ -62,7 +63,6 @@ public class Table {
         this.name = name;
     }
 
-    Hashtable<String, String> htblColNameType;
 
     public Table(String name, String PK, Hashtable<String, String> htblColNameType) throws Exception {
         this.name = name;
@@ -145,7 +145,6 @@ public class Table {
         Page nextPage = ph.loadNextPage(page);
         for (Row row : page.getRows()){
             int diff = compare(ht.get(PK), row.PK);
-            System.out.println(diff);
             if (diff == 0){
                 System.out.println("Duplicate");
                 return true;
@@ -187,14 +186,6 @@ public class Table {
             }   
         }
     }
-
-
-
-
-
-
-
-
 
 
     @Override
