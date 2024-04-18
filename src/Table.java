@@ -155,7 +155,7 @@ public class Table {
             if (diff < 0){
                 Row newRow = getNewRow(ht);
                 addToPage(page.getRows().indexOf(row), newRow, page);
-                updateIndex(ht, newRow);
+                insertIntoIndex(ht, newRow);
                 return true;
             }
         }
@@ -171,7 +171,7 @@ public class Table {
         if ((page.size() < MAX_PAGE_SIZE)){
             Row newRow = getNewRow(ht);
             addToPage(page.size(), newRow, page);
-            updateIndex(ht, newRow);
+            insertIntoIndex(ht, newRow);
             return true;
         }
 
@@ -211,18 +211,18 @@ public class Table {
     }
 
 
-    // public BPlusTree createIndex(String   strColName,
-    //                             String   strIndexName){
-                    
-    //         BPlusTree tree = new BPlusTree(4, strIndexName, strColName);
-    //         for(Row row:rows){
-    //            Entry e = row.getEntry(strColName);
-    //            tree.insert(e.getValue(),row);
-    //         }
-    //         indices.add(tree);
-    //         return tree;
-
-    // }
+    public BPlusTree createIndex(String strColName,String strIndexName){
+        Page page = ph.loadFirstPage();
+        BPlusTree tree = new BPlusTree(4, strIndexName, strColName);
+        while (page!=null) {
+            for (Row row : page.getRows()){
+                Entry e = row.getEntry(strColName);
+                tree.insert(e.getValue(),row);
+                indices.add(tree);
+            }
+        }
+        return tree;
+    }
 
     public void printInd(){
         for (BPlusTree tree : indices){
@@ -230,7 +230,7 @@ public class Table {
         }
     }
 
-    public void updateIndex(Hashtable<String, Object> ht, Row row){
+    public void insertIntoIndex(Hashtable<String, Object> ht, Row row){
         Object[] keys = ht.keySet().toArray();
         for (Object key : keys) {
             for (BPlusTree index : indices) {

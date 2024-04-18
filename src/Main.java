@@ -22,7 +22,7 @@ public class Main {
         htblColNameType.put("name", "java.lang.String");
         htblColNameType.put("gpa", "java.lang.double");
         Table t =test.createTable( strTableName, "id", htblColNameType );
-        // //test.createIndex( strTableName, "gpa", "gpaIndex" );
+        test.createIndex( strTableName, "gpa", "gpaIndex" );
         Hashtable htblColNameValue = new Hashtable( );
         // htblColNameValue.put("id", new Integer( 2 ));
         // htblColNameValue.put("name", new String("Ahmed Noor" ) );

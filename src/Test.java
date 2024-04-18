@@ -47,21 +47,21 @@ public class Test {
     }
 
 
-    // public void createIndex(String   strTableName,
-    //                         String   strColName,
-    //                         String   strIndexName) throws DBAppException{
-    //     for (Table table : tables) {
-    //         if (table.getName() == strTableName)
-    //             //table.createIndex(strColName, strIndexName);
-    //     }
+    public void createIndex(String   strTableName,
+                            String   strColName,
+                            String   strIndexName) throws DBAppException{
+        for (Table table : tables) {
+            if (table.getName() == strTableName)
+                table.createIndex(strColName, strIndexName);
+        }
 
-    // }
+    }
 
-    // public void printInd(){
-    //     for (Table table : tables) {
-    //             table.printInd();
-    //     }
-    // }
+    public void printInd(){
+        for (Table table : tables) {
+                table.printInd();
+        }
+    }
 //      public ArrayList<Row> selectFromTableHelper(SQLTerm arrSQLTerms)  throws DBAppException{
     	
 //     			for(Table table : tables) {
