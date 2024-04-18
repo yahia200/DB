@@ -10,9 +10,10 @@ public class Page implements Serializable {
     private Vector<Row> rows = new Vector<>();
     private String filePath;
 
-    public Page(int num) {
+    public Page(int num, String tableName) {
         this.rows = new Vector<>();
         this.num=num;
+        this.filePath= tableName+  "_" + num + ".class";
     }
 
     public void setFilePath(String filePath) {
@@ -25,6 +26,13 @@ public class Page implements Serializable {
 
     }
 
+
+    public void addRow(int index, Row row) {
+        rows.add(index, row);
+            
+
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -32,6 +40,10 @@ public class Page implements Serializable {
             sb.append(row.toString()).append(",");
         }
         return sb.substring(0,sb.length()-1);
+    }
+
+    public int getNum(){
+        return  num;
     }
 
     public void save() throws Exception {
@@ -54,4 +66,15 @@ public class Page implements Serializable {
     public int size() {
         return  rows.size();
     }
+
+    public  Vector<Row> getRows() {
+        return rows;
+    }
+
+
+    public Row  getLastRow(){
+        return rows.get(rows.size()-1);
+    }
+
+
 }

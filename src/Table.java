@@ -1,8 +1,10 @@
-import java.util.Hashtable;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 
 public class Table {
-    private static final int MAX_PAGE_SIZE = 3;
+    private CSVHandler csv = new CSVHandler();
+    private PageHandler ph = new PageHandler(this.name);
+    private static final int MAX_PAGE_SIZE = 10;
     private String PK;
     private String name;
     private Vector<Row> rows = new Vector<Row>();
@@ -62,12 +64,14 @@ public class Table {
 
     Hashtable<String, String> htblColNameType;
 
-    public Table(String name, String PK, Hashtable<String, String> htblColNameType) throws DBAppException {
+    public Table(String name, String PK, Hashtable<String, String> htblColNameType) throws Exception {
         this.name = name;
         this.PK = PK;
         this.htblColNameType = htblColNameType;
-        this.pages.add(new Page(1));
+        Page firstPage = new Page(1, this.name);
+        firstPage.save();
         createTable(htblColNameType);
+        ph.setName(name);
     }
 
     void createTable(Hashtable<String, String> ht) throws DBAppException {
@@ -89,52 +93,119 @@ public class Table {
             throw new DBAppException("the PK is not an attribute");
     }
 
-    boolean duplicateRow(Object value) {
-        for (Row row : rows) {
-            if (value.equals(row.PK)) {
+    private void addToPage(int index, Row row, Page page) throws Exception{
+        Page prevPage = ph.loadPrevPage(page);
+        Page nextPage = ph.loadNextPage(page);
+        if (page.size() < MAX_PAGE_SIZE){
+            page.addRow(index,row);
+            page.save();
+            return;
+        }
+        
+        if (index == 0 && prevPage != null){
+            if ( prevPage.size() < MAX_PAGE_SIZE) {
+                addToPage(prevPage.size(), row, prevPage);
+                prevPage.save();
+                return;
+            }
+        }
+        
+        Row lastRow = page.getLastRow();
+
+        
+        if (nextPage == null) {
+            Page newPage = new Page(page.getNum()+1, this.name);
+            newPage.save();
+            nextPage = ph.loadNextPage(page);
+
+        }
+
+        addToPage(0, lastRow, nextPage);
+    }
+
+
+    private Row getNewRow(Hashtable<String, Object> ht){
+        Row row = new Row(ht.get(PK));
+        Object[] keys = ht.keySet().toArray();
+        for (Object key : keys) {
+            for (Entry attribute : attributes) {
+                if ((String) key == attribute.getName()) {
+                    row.add(attribute.createEntry(ht.get(key)));
+                    break;
+                }
+            }
+        }
+        return row;
+    }
+
+
+
+
+    private boolean InPage(Page page, Hashtable<String, Object> ht) throws Exception {
+        Page nextPage = ph.loadNextPage(page);
+        for (Row row : page.getRows()){
+            int diff = compare(ht.get(PK), row.PK);
+            System.out.println(diff);
+            if (diff == 0){
+                System.out.println("Duplicate");
+                return true;
+            }
+            if (diff < 0){
+                Row newRow = getNewRow(ht);
+                addToPage(page.getRows().indexOf(row), newRow, page);
+                updateIndex(ht, newRow);
                 return true;
             }
         }
+            
+        if (nextPage == null){
+            Row newRow = getNewRow(ht);
+            addToPage(page.size(), newRow, page);
+            updateIndex(ht, newRow);
+            return true;
+        }
+
+        
         return false;
-    }
+}
+
+
 
     void insert(Hashtable<String, Object> ht) throws Exception {
-        Page page = pages.get(pages.size()-1);
-        Object[] keys = ht.keySet().toArray();
-        if (duplicateRow(ht.get(PK))){
-            throw new DBAppException("Duplicate PK");
-        }
-        else {
-            Row row = new Row(ht.get(PK));
-            for (Object key : keys) {
-                for (Entry attribute : attributes) {
-                    if ((String) key == attribute.getName()) {
-                        row.add(attribute.duplicate(ht.get(key)));
-                        break;
-                    }
-                }
+        Page page = ph.loadFirstPage();
+        if (page.size() == 0){
+            Row newRow = getNewRow(ht);
+            addToPage(0, newRow, page);
+            return;
+    }
+        while (page  != null) {
+            if(!InPage(page, ht)){
+                page = ph.loadNextPage(page);
             }
-            updateIndex(ht, row);
-            rows.add(row);
-            if(page.size( ) >= MAX_PAGE_SIZE){
-                System.out.println("Page full, creating a new one.");
-                page = new Page(pages.size()+1);
-                pages.add(page);
-            }
-            page.addRow(row);
-            String filePath = this.name + (pages.indexOf(page)+1) + ".class";
-            page.setFilePath(filePath);
-            page.save();
+            else{
+                break;
+            }   
         }
     }
+
+
+
+
+
+
+
+
+
 
     @Override
     public String toString() {
+        Page page = ph.loadFirstPage();
         String res="";
-        for(Row row : rows){
-            res += row.toString() +"\n" ;
+        while (page !=null){
+                res += page.toString();
+                page = ph.loadNextPage(page);
         }
-        return res.substring(0,res.length()-2);
+        return res.substring(0,res.length());
     }
 
 
@@ -202,4 +273,54 @@ public class Table {
             throw new DBAppException("Row with clustering key value " + strClusteringKeyValue + " not found in table.");
         }
     }
+
+    
+
+   
+
+    
+
+    private int compare(Object o1, Object o2) {
+        if (o1 instanceof Integer)
+            return  (int)o1 - (int)o2;
+        else if (o1 instanceof String)
+            return   ((String) o1).compareToIgnoreCase((String) o2);
+        else if (o1 instanceof Double)
+            return   ((Double) o1).compareTo((Double) o2);
+        return 0;
+
+
+        }
+
+    public void saveMeta() throws IOException{
+        ArrayList<String[]> lines = new ArrayList<>();
+        boolean clus = false;
+        String indString = "null,null";
+        String[] ind;
+        for (Entry attribute : attributes){
+            if (attribute.getName().equalsIgnoreCase(PK))
+                clus = true;
+            indString = checkIndex(attribute);
+            ind = indString.split(",");
+            String[] line = {this.name,attribute.getName(),attribute.getType(),""+clus,ind[0], ind[1]};
+            lines.add(line);
+            clus=false;
+        }
+
+        csv.saveCSV(lines);
+
+    }
+
+
+
+
+    public String checkIndex(Entry ent){
+        String col = ent.getName();
+        for (BPlusTree index : indices){
+            if (index.colName.equalsIgnoreCase(col))
+                return index.getName()+",B+tree";
+        }
+        return "null,null";
+    }
+
 }

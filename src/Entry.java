@@ -16,7 +16,10 @@ public abstract class Entry implements Serializable{
     }
 
 
-    public abstract Entry duplicate(Object o);
+    public abstract Entry createEntry(Object o);
 
     public abstract int getValue();
+
+    public abstract String getType();
+
 }

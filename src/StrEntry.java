@@ -18,12 +18,16 @@ public class StrEntry extends Entry {
         this.value = value;
     }
 
-    public Entry duplicate(Object value) {
+    public Entry createEntry(Object value) {
         return new StrEntry(getName(), (String)value);
     }
 
     @Override
     public String toString() {
         return value;
+    }
+
+    public String getType(){
+        return "java.lang.String";
     }
 }

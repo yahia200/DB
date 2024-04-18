@@ -15,6 +15,10 @@ public class BPlusTree {
     return colName;
   }
 
+  public String getName() {
+    return name;
+  }
+
   LeafNode firstLeaf;
 
   public BPlusTree(int m, String name, String colName) {

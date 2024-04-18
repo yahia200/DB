@@ -11,7 +11,7 @@ public class IntEntry extends Entry {
 
         this.value = valueint;
     }
-    public IntEntry duplicate(Object value){return new IntEntry(getName(), (int)value);
+    public IntEntry createEntry(Object value){return new IntEntry(getName(), (int)value);
     }
 
     @Override
@@ -23,5 +23,9 @@ public class IntEntry extends Entry {
     public String toString() {
 
         return this.value+"";
+    }
+
+    public String getType(){
+        return "java.lang.Integer";
     }
 }

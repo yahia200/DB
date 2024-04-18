@@ -1,11 +1,10 @@
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.*;
 
 public class Test {
     public Vector<Table> tables = new Vector<Table>();
     public Table createTable(String strTableName,
                                     String strClusteringKeyColumn,
-                                    Hashtable<String,String> htblColNameType) {
+                                    Hashtable<String,String> htblColNameType) throws Exception {
         try {
             for (Table table : tables) {
                 if (table.getName() == strTableName)

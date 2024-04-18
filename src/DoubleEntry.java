@@ -15,12 +15,16 @@ public class DoubleEntry extends Entry {
     }
 
     @Override
-    public Entry duplicate(Object value) {
+    public Entry createEntry(Object value) {
         return new DoubleEntry(getName(), (double)value);
     }
 
     @Override
     public String toString() {
         return value+"";
+    }
+
+    public String getType(){
+        return "java.lang.Double";
     }
 }

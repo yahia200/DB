@@ -20,41 +20,36 @@ public class Main {
         Table t =test.createTable( strTableName, "id", htblColNameType );
         test.createIndex( strTableName, "gpa", "gpaIndex" );
         Hashtable htblColNameValue = new Hashtable( );
-        htblColNameValue.put("id", new Integer( 2343432 ));
+        htblColNameValue.put("id", new Integer( 2 ));
         htblColNameValue.put("name", new String("Ahmed Noor" ) );
         htblColNameValue.put("gpa", new Double( 0.95 ) );
         test.insertIntoTable( strTableName , htblColNameValue );
-        test.printInd();
         htblColNameValue.clear( );
-        htblColNameValue.put("id", new Integer( 453455 ));
+        htblColNameValue.put("id", new Integer( 4 ));
         htblColNameValue.put("name", new String("Ali Noor" ) );
         htblColNameValue.put("gpa", new Double( 0.97 ) );
         test.insertIntoTable( strTableName , htblColNameValue );
-        test.printInd();
         htblColNameValue.clear( );
-        htblColNameValue.put("id", new Integer( 63749 ));
+        htblColNameValue.put("id", new Integer( 6 ));
         htblColNameValue.put("name", new String("Dalia Noor" ) );
         htblColNameValue.put("gpa", new Double( 1.25 ) );
         test.insertIntoTable( strTableName , htblColNameValue );
-        test.printInd();
         htblColNameValue.clear( );
-        htblColNameValue.put("id", new Integer( 23498 ));
+        htblColNameValue.put("id", new Integer( 12 ));
         htblColNameValue.put("name", new String("John Noor" ) );
         htblColNameValue.put("gpa", new Double( 1.5 ) );
         test.insertIntoTable( strTableName , htblColNameValue );
-        test.printInd();
         htblColNameValue.clear( );
-        htblColNameValue.put("id", new Integer( 78452 ));
+        htblColNameValue.put("id", new Integer( 7 ));
         htblColNameValue.put("name", new String("Zaky Noor" ) );
         htblColNameValue.put("gpa", new Double( 0.88 ) );
         test.insertIntoTable( strTableName , htblColNameValue );
-        test.printInd();
-        if(t != null)
-            System.out.println(t.toString());
-        else
-            System.out.println("table is null");
-        t.pp();
+        // if(t != null)
+        //     System.out.println(t.toString());
+        // else
+        //     System.out.println("table is null");
 
+        t.saveMeta();
     }
 
 }
