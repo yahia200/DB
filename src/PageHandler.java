@@ -10,7 +10,7 @@ public class PageHandler {
     public Page loadNextPage(Page  p){
         Page page = null;
         try{
-            String filePath = this.name + "_" + (""+(p.getNum()+1)) + ".class";
+            String filePath = this.name + "_" + (""+(p.getNum()+1)) + ".ser";
             page = Page.load(filePath);
         }catch(Exception e){
             //System.out.println("Cant load  next page");
@@ -23,7 +23,7 @@ public class PageHandler {
     public Page loadPrevPage(Page  p){
         Page page = null;
         try{
-            String filePath = this.name + "_" + (""+(p.getNum()-1)) + ".class";
+            String filePath = this.name + "_" + (""+(p.getNum()-1)) + ".ser";
             page = Page.load(filePath);
         }catch(Exception e){
             //System.out.println("Cant load  prev page");
@@ -35,10 +35,10 @@ public class PageHandler {
     public Page loadFirstPage(){
         Page page = null;
         try{
-            String filePath = this.name+ "_" + "1" + ".class";
+            String filePath = this.name+ "_" + "1" + ".ser";
             page = Page.load(filePath);
         }catch(Exception ex){
-            //System.out.println("Cant load  first page");
+            System.out.println(this.name);
         }
         return page;
     }

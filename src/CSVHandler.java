@@ -37,5 +37,71 @@ public class CSVHandler {
         }
         return escapedData;
     }
-    
+
+    public Vector<Table> ReadCSV() throws Exception{
+        ArrayList<ArrayList<Object>> tables = new ArrayList<>();
+        Vector<Table> res = new Vector<>();
+        tables.add(new ArrayList<>());
+        String csvFile = "Meta-Data.csv";
+        String line;
+        String csvDelimiter = ",";
+        List<String[]> records = new ArrayList<>();
+        ArrayList<String> tableNames = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+            while ((line = br.readLine())!= null) {
+                String[] values = line.split(csvDelimiter);
+                records.add(values);
+            }
+        }
+
+        String currTable = records.get(0)[0];
+
+        for (String[ ] record : records){
+            if(!tableNames.contains(record[0])){
+                tableNames.add(record[0]);
+                ArrayList<Object> table = new ArrayList<>();
+                table.add(record[0]);
+                table.add(new Vector<Entry>());
+                tables.add(table);
+            }
+        }
+        tables.remove(0);
+
+        for (ArrayList<Object> table : tables){
+            for (String[ ] record : records){
+                if(table.contains(record[0])){
+                    if (record[2].equalsIgnoreCase("java.lang.Integer")) {
+                        ((Vector<Entry>)table.get(1)).add(new IntEntry((record[1]), 0));
+                        if (record[3].equalsIgnoreCase("true"))
+                            table.add(record[1]);
+                    } else if (record[2].equalsIgnoreCase("java.lang.String")) {
+                        ((Vector<Entry>)table.get(1)).add(new StrEntry((record[1]), "ds"));
+                        if (record[3].equalsIgnoreCase("true"))
+                            table.add(record[1]);
+                    } else if (record[2].equalsIgnoreCase("java.lang.double")) {
+                        ((Vector<Entry>)table.get(1)).add(new DoubleEntry((record[1]), 22.2));
+                        if (record[3].equalsIgnoreCase("true"))
+                            table.add(record[1]);
+                    }      
+                }
+            }
+
+        }
+
+        for (ArrayList<Object> table : tables){
+            Table newTable = new Table((String)table.get(0), (Vector<Entry>)table.get(1), (String)table.get(2));
+            res.add(newTable);
+
+            
+        }
+
+        return res;
+
+    }
 }
+
+
+      
+    
+

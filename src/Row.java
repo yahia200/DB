@@ -2,14 +2,15 @@ import java.io.Serializable;
 import java.util.Vector;
 
 public class Row implements Serializable{
-    Object PK;
-    private Vector<Entry> columns = new Vector<Entry>();
+    Serializable PK;
+
+    public Vector<Entry> columns = new Vector<Entry>();
 
     public Vector<Entry> getColumns() {
         return columns;
     }
 
-    public Row(Object pk) {
+    public Row(Serializable pk) {
         PK = pk;
     }
 

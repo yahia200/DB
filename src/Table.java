@@ -7,15 +7,15 @@ public class Table {
     private static final int MAX_PAGE_SIZE = 10;
     private String PK;
     private String name;
-    private Vector<Row> rows = new Vector<Row>();
     private Vector<BPlusTree> indices = new Vector<BPlusTree>();
-    public Vector<Page> pages = new Vector<Page>();
     Hashtable<String, String> htblColNameType;
 
     //! Test
     public void pp(){
-        for (Page page : pages){
-            System.out.println(page.toString());
+        Page page = ph.loadFirstPage();
+        while (page != null) {
+           System.out.println(page.toString());
+            page = ph.loadNextPage(page);
         }
     }
 
@@ -38,15 +38,6 @@ public class Table {
     public void setAttributes(Vector<Entry> attributes) {
         this.attributes = attributes;
     }
-
-    public Vector<Row> getRows() {
-        return rows;
-    }
-
-    public void setRows(Vector<Row> rows) {
-        this.rows = rows;
-    }
-
     public String getPK() {
         return PK;
     }
@@ -68,13 +59,22 @@ public class Table {
         this.name = name;
         this.PK = PK;
         this.htblColNameType = htblColNameType;
-        Page firstPage = new Page(1, this.name);
-        firstPage.save();
+        ph.setName(this.name);
         createTable(htblColNameType);
-        ph.setName(name);
     }
 
-    void createTable(Hashtable<String, String> ht) throws DBAppException {
+
+    public Table(String name, Vector<Entry> entries, String PK) throws Exception{
+        this.name=name;
+        System.out.println(this.name);
+        this.PK=PK;
+        this.attributes = entries;
+        ph.setName(this.name);
+    }
+
+    void createTable(Hashtable<String, String> ht) throws Exception {
+        Page firstPage = new Page(1, this.name);
+        firstPage.save();
         boolean keyPresent=false;
         Object[] attributes = ht.keySet().toArray();
 
@@ -91,6 +91,7 @@ public class Table {
         }
         if(!keyPresent)
             throw new DBAppException("the PK is not an attribute");
+        saveMeta();
     }
 
     private void addToPage(int index, Row row, Page page) throws Exception{
@@ -125,11 +126,11 @@ public class Table {
 
 
     private Row getNewRow(Hashtable<String, Object> ht){
-        Row row = new Row(ht.get(PK));
+        Row row = new Row((Serializable)ht.get(PK));
         Object[] keys = ht.keySet().toArray();
         for (Object key : keys) {
             for (Entry attribute : attributes) {
-                if ((String) key == attribute.getName()) {
+                if (((String) key).equalsIgnoreCase(attribute.getName())) {
                     row.add(attribute.createEntry(ht.get(key)));
                     break;
                 }
@@ -200,17 +201,18 @@ public class Table {
     }
 
 
-    public BPlusTree createIndex(String   strColName,
-                                String   strIndexName){
-            BPlusTree tree = new BPlusTree(4, strIndexName, strColName);
-            for(Row row:rows){
-               Entry e = row.getEntry(strColName);
-               tree.insert(e.getValue(),row);
-            }
-            indices.add(tree);
-            return tree;
+    // public BPlusTree createIndex(String   strColName,
+    //                             String   strIndexName){
+                    
+    //         BPlusTree tree = new BPlusTree(4, strIndexName, strColName);
+    //         for(Row row:rows){
+    //            Entry e = row.getEntry(strColName);
+    //            tree.insert(e.getValue(),row);
+    //         }
+    //         indices.add(tree);
+    //         return tree;
 
-    }
+    // }
 
     public void printInd(){
         for (BPlusTree tree : indices){
@@ -230,40 +232,7 @@ public class Table {
         }
     }
 
- public void deleteFromTable(Hashtable<String,Object> htblColNameValue) throws DBAppException{
-        for (int i = 0; i < this.getRows().size(); i++) {
-            if ((htblColNameValue.get(this.getPK())).equals(this.rows.get(i).PK)) {
-                rows.remove(i);
-                
-                break;
-            }
-        }
-    }
-     void updateTable(String strClusteringKeyValue, Hashtable<String, Object> htblColNameValue) throws DBAppException {
-        boolean rowFound = false;
-
-        for (Row row : rows) {
-            if (strClusteringKeyValue.equals(row.PK)){
-                rowFound = true;
-                for (Map.Entry<String, Object> entry : htblColNameValue.entrySet()) {
-                    String colName = entry.getKey();
-                    Object colValue = entry.getValue();
-
-                    for (Entry attribute : attributes) {
-                        if (colName.equals(attribute.getName())) {
-                            row.update(attribute, colValue);
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-        }
-
-        if (!rowFound) {
-            throw new DBAppException("Row with clustering key value " + strClusteringKeyValue + " not found in table.");
-        }
-    }
+ 
 
     
 
