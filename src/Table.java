@@ -22,6 +22,9 @@ public class Table {
         }
     }
 
+    public void addIndex(BPlusTree index){
+        this.indices.add(index);
+    }
 
     public void setIndecies(Vector<BPlusTree> indecies) {
 
@@ -187,8 +190,8 @@ public class Table {
 
     void insert(Hashtable<String, Object> ht) throws Exception {
         Page page = ph.loadFirstPage();
+        Row newRow = getNewRow(ht);
         if (page.size() == 0){
-            Row newRow = getNewRow(ht);
             addToPage(0, newRow, page);
             return;
     }
@@ -200,6 +203,7 @@ public class Table {
                 break;
             }   
         }
+        insertIntoIndex(ht, newRow);
     }
 
 
@@ -215,38 +219,60 @@ public class Table {
     }
 
 
-    public BPlusTree createIndex(String strColName,String strIndexName){
+    public BPlusTree createIndex(String strColName,String strIndexName) throws Exception{
         Page page = ph.loadFirstPage();
-        BPlusTree tree = new BPlusTree(4, strIndexName, strColName);
+        BPlusTree tree = new BPlusTree(10, strIndexName, strColName, this.name);
         while (page!=null) {
             for (Row row : page.getRows()){
+                if (row != null){
                 Entry e = row.getEntry(strColName);
                 tree.insert(e.getValue(),row);
-                indices.add(tree);
+                }
             }
+            page=ph.loadNextPage(page);
         }
+        indices.add(tree);
+        saveIndex();
         return tree;
     }
 
     public void printInd(){
         for (BPlusTree tree : indices){
-            System.out.println(tree.search(0,2));
+            System.out.println(tree.search(0,100));
         }
     }
 
-    public void insertIntoIndex(Hashtable<String, Object> ht, Row row){
+    public void saveIndex() throws Exception{
+        for (BPlusTree index : indices)
+            index.save();
+    }
+
+    public void insertIntoIndex(Hashtable<String, Object> ht, Row row) throws Exception{
         Object[] keys = ht.keySet().toArray();
         for (Object key : keys) {
             for (BPlusTree index : indices) {
-                if ((String) key == index.getColName()) {
+                if (((String) key).equalsIgnoreCase(index.getColName())) {
                     index.insert(ht.get(key), row);
+                    index.save();
                     break;
                 }
             }
         }
     }
 
- 
+    public void deleteFromIndex(Hashtable<String, Object> ht, Row row){
+        Object[] keys = ht.keySet().toArray();
+        for (Object key : keys) {
+            for (BPlusTree index : indices) {
+                if (((String) key).equalsIgnoreCase(index.getColName())) {
+                    index.remove(ht.get(key));
+                    break;
+                }
+            }
+        }
+    }
+
+    
 
     
 

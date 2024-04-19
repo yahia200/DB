@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -14,12 +15,21 @@ public class Main {
         htblColNameType.put("name", "java.lang.String");
         htblColNameType.put("gpa", "java.lang.double");
         //Table t =test.createTable( strTableName, "id", htblColNameType );
+        //test.createIndex(strTableName, "id", "idIndex");
+        //test.saveCSV();
         //Table t2 =test.createTable( strTableName+"test", "id", htblColNameType );
-        insert();
-        delete();
-        test.tables.get(0).pp();
-        test.tables.get(1).pp();
-       
+        //insert();
+        //delete();
+        //test.tables.get(0).pp();
+        //test.tables.get(1).pp();
+        //System.out.println(test.tables.size());
+        //test.tables.get(0).printInd();
+
+        FileInputStream fileIn = new FileInputStream("idIndex" + "_" + strTableName + ".class");
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        BPlusTree index = (BPlusTree) in.readObject();
+        in.close();
+        fileIn.close();
 
 
 

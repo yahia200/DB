@@ -42,7 +42,7 @@ public class Row implements Serializable{
 
     public Entry getEntry(String name){
         for (Entry e : columns){
-            if(name == e.getName())
+            if(name.equalsIgnoreCase(e.getName()))
                 return e;
         }
         return null;
@@ -50,11 +50,11 @@ public class Row implements Serializable{
      public void update(Entry attribute, Object colValue) {
         for (Entry column : columns) {
             if (column.getName().equals(attribute.getName())) {
-                if (colValue == "java.lang.Integer") {
+                if (colValue.equals("java.lang.Integer")) {
                    column=new IntEntry(column.getName(),(int)colValue);
-                } else if (colValue == "java.lang.String") {
+                } else if (colValue.equals("java.lang.String")) {
                     column=new StrEntry(column.getName(),(String)colValue);
-                } else if (colValue == "java.lang.double") {
+                } else if (colValue.equals("java.lang.double")) {
                     column=new DoubleEntry(column.getName(),(Double)colValue);
                 }
                 break;

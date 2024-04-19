@@ -68,12 +68,13 @@ public class Test {
 
     public void createIndex(String   strTableName,
                             String   strColName,
-                            String   strIndexName) throws DBAppException{
+                            String   strIndexName) throws Exception{
         for (Table table : tables) {
-            if (table.getName() == strTableName)
+            if (table.getName().equalsIgnoreCase(strTableName))
                 table.createIndex(strColName, strIndexName);
+                
         }
-
+        saveCSV();
     }
 
     public void printInd(){

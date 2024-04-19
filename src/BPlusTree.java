@@ -1,11 +1,13 @@
 // Searching on a B+ tree in Java
 
+import java.io.*;
 import java.util.*;
 
-public class BPlusTree {
+public class BPlusTree implements Serializable{
 
-
+  private static final long serialVersionUID = 354296046238492000;
   boolean d = false;
+  String tableName;
   String colName;
   String name;
   int m;
@@ -21,11 +23,12 @@ public class BPlusTree {
 
   LeafNode firstLeaf;
 
-  public BPlusTree(int m, String name, String colName) {
+  public BPlusTree(int m, String name, String colName, String tableName) {
     this.m = m;
     this.root = null;
     this.name =  name;
     this.colName = colName;
+    this.tableName = tableName;
 
   }
 
@@ -296,7 +299,7 @@ public class BPlusTree {
     return halfKeys;
   }
 
-  public void insert(Object k, Row value) {
+  public void insert(Serializable k, Row value) {
     if ( k instanceof Double)
       d= true;
     int key = keyToInt(k);
@@ -363,7 +366,7 @@ public class BPlusTree {
     }
   }
 
-  public Row search(Object k) {
+  public Row search(Serializable k) {
     int key = keyToInt(k);
     if (isEmpty()) {
       return null;
@@ -381,7 +384,20 @@ public class BPlusTree {
     }
   }
 
-  public ArrayList<Row> search(Object lBound, Object uBound) {
+  public void remove(Serializable k){
+      Row row = search(k);
+      row = null;
+  }
+
+  public void save() throws Exception{
+    FileOutputStream fileOut = new FileOutputStream(this.name+ "_" + this.tableName + ".class");
+    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+    out.writeObject(this);
+    fileOut.close();
+    out.close();
+  }
+
+  public ArrayList<Row> search(Serializable lBound, Serializable uBound) {
     int lowerBound = keyToInt(lBound);
     int upperBound = keyToInt(uBound);
     ArrayList<Row> values = new ArrayList<Row>();
@@ -407,11 +423,11 @@ public class BPlusTree {
     return values;
   }
 
-  public class Node {
+  public class Node implements Serializable{
     InternalNode parent;
   }
 
-  private class InternalNode extends Node {
+  private class InternalNode extends Node{
     int maxDegree;
     int minDegree;
     int degree;
@@ -501,7 +517,7 @@ public class BPlusTree {
     }
   }
 
-  public class LeafNode extends Node {
+  public class LeafNode extends Node  implements Serializable{
     int maxNumPairs;
     int minNumPairs;
     int numPairs;
@@ -559,7 +575,7 @@ public class BPlusTree {
     }
   }
 
-  public class DictionaryPair implements Comparable<DictionaryPair> {
+  public class DictionaryPair implements Comparable<DictionaryPair>, Serializable{
     int key;
     Row value;
 
@@ -579,7 +595,7 @@ public class BPlusTree {
     }
   }
 
-  public int keyToInt(Object key){
+  public int keyToInt(Serializable key){
       if (key instanceof String){
         int ascii = 0;
         for(int i=0;i<((String)key).length();i++) {
