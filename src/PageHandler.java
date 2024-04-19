@@ -62,10 +62,12 @@ public class PageHandler {
 
         while (nextPage != null){
             page = nextPage;
-            page.setNum(num++);
+            page.setNum(num);
             page.save();
-            nextPage = loadNextPage(page);
+            num++;
+            nextPage = loadNextPage(nextPage);
         }
-        page.setNum(page.getNum()-1);
+        pageToDelete = new File(page.getPath());
+        pageToDelete.delete();
     }
 }

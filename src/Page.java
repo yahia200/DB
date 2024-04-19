@@ -7,12 +7,14 @@ import java.util.Vector;
 
 public class Page implements Serializable {
     private int num;
+    private String tableName;
     private Vector<Row> rows = new Vector<>();
     private String filePath;
 
     public Page(int num, String tableName) {
         this.rows = new Vector<>();
         this.num=num;
+        this.tableName=tableName;
         this.filePath= tableName+  "_" + num + ".class";
     }
 
@@ -28,6 +30,7 @@ public class Page implements Serializable {
 
     public void setNum(int num){
         this.num=num;
+        this.filePath= this.tableName+  "_" + num + ".class";
     }
 
     public String getPath(){

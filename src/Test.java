@@ -30,7 +30,7 @@ public class Test {
 			// TODO: handle exception
 		}
 	}
-    public void deleteFromTable(String strTableName, Hashtable<String,Object> ht) throws DBAppException{
+    public void deleteFromTable(String strTableName, Hashtable<String,Object> ht) throws Exception{
         for (Table table : tables) {
             if (table.getName().equals(strTableName)) {
                 table.deleteFromTable(ht);

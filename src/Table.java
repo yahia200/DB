@@ -281,7 +281,7 @@ public class Table {
 
     }
 
-    public void deleteFromTable(Hashtable<String, Object> ht) throws DBAppException {
+    public void deleteFromTable(Hashtable<String, Object> ht) throws Exception {
         System.out.println("ht: " + ht);
         Iterator<Object> iterator = ht.values().iterator();
         while (iterator.hasNext()) {
@@ -294,18 +294,16 @@ public class Table {
                     if (value.toString().equals(page.getRows().get(i).getColumns().get(j).toString())) {
                         System.out.println("Deleting row with index: " + i);
                         page.getRows().remove(i);
-                       // i--;
+                        if (page.size()==0){
+                            ph.deletePage(page);
+                        }
+                        else
+                            page.save();
                         System.out.println("Row Deleted");
                         break;
-//                    } else {
-//                        String msg = "Error, no field found";
-//                        throw new DBAppException(msg);
-//                    }
-
                     }
                 }
             }
-                System.out.println("Rows after deletion: " + page.getRows().toString());
 
                 page = ph.loadNextPage(page);
 
