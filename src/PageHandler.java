@@ -55,32 +55,6 @@ public class PageHandler {
     public void setName(String name){
         this.name=name;
     }
-    
-
-    // public void deletePage(Page page) throws Exception{
-    //     Page nextPage = loadNextPage(page);
-    //     System.out.println(page.getPath());
-    //     if (page.getNum() == 1 && nextPage == null){
-    //         return;
-    //     }
-
-    //     int num = page.getNum();
-    //     File pageToDelete = new File(page.getPath());
-    //     pageToDelete.delete();
-
-    //     while (nextPage != null){
-    //         page = nextPage;
-    //         System.out.println(page.getNum());
-    //         page.setNum(num);
-    //         page.save();
-    //         num++;
-    //         nextPage = loadNextPage(nextPage);
-    //     }
-    //     pageToDelete = new File(page.getPath());
-    //     System.out.println(page.getPath());
-    //     pageToDelete.delete();
-    // }
-
 
     public void deletePage(Page page) throws Exception{
         Page nextPage = loadNextPage(page);
@@ -90,6 +64,8 @@ public class PageHandler {
             Page pageAfter = loadNextPage(nextPage);
             File oldName = new File(nextPage.getPath());
             nextPage.setNum(nextPage.getNum()-1);
+            for (Row row : nextPage.getRows())
+                row.setPageNum(nextPage.getNum()); 
             File newName = new File(nextPage.getPath());
             oldName.renameTo(newName);
             nextPage.save();

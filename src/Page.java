@@ -1,9 +1,5 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Vector;
+import java.io.*;
+import java.util.*;
 
 public class Page implements Serializable {
     private int num;
@@ -47,8 +43,8 @@ public class Page implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Object row : rows) {
-            sb.append(row.toString()).append(",");
+        for (Row row : rows) {
+            sb.append("(" + row.toString()).append(","+ row.getPageNum() + ")");
         }
         return sb.substring(0,sb.length()-1);
     }

@@ -1,10 +1,4 @@
-
-import java.util.Hashtable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -19,12 +13,12 @@ public class Main {
         htblColNameType.put("id", "java.lang.Integer");
         htblColNameType.put("name", "java.lang.String");
         htblColNameType.put("gpa", "java.lang.double");
-        Table t =test.createTable( strTableName, "id", htblColNameType );
-        Table t2 =test.createTable( strTableName+"test", "id", htblColNameType );
+        //Table t =test.createTable( strTableName, "id", htblColNameType );
+        //Table t2 =test.createTable( strTableName+"test", "id", htblColNameType );
         insert();
-        //test.tables.get(0).pp();
-        //delete();
-        //test.tables.get(1).pp();
+        delete();
+        test.tables.get(0).pp();
+        test.tables.get(1).pp();
        
 
 

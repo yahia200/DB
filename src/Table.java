@@ -101,6 +101,7 @@ public class Table {
         Page nextPage = ph.loadNextPage(page);
         if (page.size() < MAX_PAGE_SIZE){
             page.addRow(index,row);
+            row.setPageNum(page.getNum());
             page.save();
             return;
         }
@@ -124,6 +125,7 @@ public class Table {
         }
         page.getRows().remove(page.size()-1);
         page.addRow(index, row);
+        row.setPageNum(page.getNum());
         page.save();
         addToPage(0, lastRow, nextPage);
     }

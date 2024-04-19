@@ -6,9 +6,14 @@ public class Row implements Serializable{
 
     public Vector<Entry> columns = new Vector<Entry>();
 
+    private int pageNum;
+
     public Vector<Entry> getColumns() {
         return columns;
     }
+
+    public void setPageNum(int  pageNum) { this.pageNum = pageNum;}
+    public int getPageNum() { return pageNum;}
 
     public Row(Serializable pk) {
         PK = pk;
