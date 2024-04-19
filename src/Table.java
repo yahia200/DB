@@ -11,10 +11,13 @@ public class Table {
     Hashtable<String, String> htblColNameType;
 
     //! Test
-    public void pp(){
+    public void pp() throws Exception{
         Page page = ph.loadFirstPage();
         while (page != null) {
-           System.out.println(page.toString());
+            if(page.size()>0)
+                System.out.println(page.toString());
+            else
+                System.out.println("Empty page");
             page = ph.loadNextPage(page);
         }
     }
@@ -91,7 +94,6 @@ public class Table {
         }
         if(!keyPresent)
             throw new DBAppException("the PK is not an attribute");
-        saveMeta();
     }
 
     private void addToPage(int index, Row row, Page page) throws Exception{
@@ -262,7 +264,7 @@ public class Table {
 
         }
 
-    public void saveMeta() throws IOException{
+    public ArrayList<String[]> getMeta() throws IOException{
         ArrayList<String[]> lines = new ArrayList<>();
         boolean clus = false;
         String indString = "null,null";
@@ -276,39 +278,38 @@ public class Table {
             lines.add(line);
             clus=false;
         }
-
-        csv.saveCSV(lines);
+        return lines;
 
     }
 
     public void deleteFromTable(Hashtable<String, Object> ht) throws Exception {
         System.out.println("ht: " + ht);
         Iterator<Object> iterator = ht.values().iterator();
+        ArrayList<Page> pagesToDelete = new ArrayList<>();
         while (iterator.hasNext()) {
             Object value = iterator.next();
             System.out.println("Deleting rows with value: " + value);
             Page page = ph.loadFirstPage();
             while (page != null){
-            for (int i = 0; i < page.getRows().size(); i++) {
-                for (int j = 0; j < this.attributes.size(); j++) {
-                    if (value.toString().equals(page.getRows().get(i).getColumns().get(j).toString())) {
-                        System.out.println("Deleting row with index: " + i);
-                        page.getRows().remove(i);
-                        if (page.size()==0){
-                            ph.deletePage(page);
-                        }
-                        else
+                for (int i = 0; i < page.getRows().size(); i++) {
+                    for (int j = 0; j < this.attributes.size(); j++) {
+                        if (value.toString().equalsIgnoreCase(page.getRows().get(i).getColumns().get(j).toString())) {
+                            System.out.println("Deleting row with index: " + i);
+                            page.getRows().remove(i);
+                            if(page.size()==0)
+                                pagesToDelete.add(page);
                             page.save();
-                        System.out.println("Row Deleted");
-                        break;
+                            break;
+                        }
                     }
                 }
-            }
-
                 page = ph.loadNextPage(page);
 
             }
         }
+
+        for (Page pageToDelete : pagesToDelete)
+            ph.deletePage(pageToDelete);
     }
 //            public void deleteFromTable(Hashtable<String,Object> htblColNameValue) throws DBAppException{
 //                for (int i = 0; i < this.getRows().size(); i++) {
@@ -328,5 +329,6 @@ public class Table {
         }
         return "null,null";
     }
+
 
 }

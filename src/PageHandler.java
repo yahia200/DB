@@ -39,7 +39,14 @@ public class PageHandler {
             String filePath = this.name+ "_" + "1" + ".class";
             page = Page.load(filePath);
         }catch(Exception ex){
-            System.out.println(this.name);
+            String filePath = this.name+ "_" + "1" + ".class";
+            page = new Page(1, name);
+            try {
+                page.save();
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         return page;
     }
@@ -50,24 +57,58 @@ public class PageHandler {
     }
     
 
+    // public void deletePage(Page page) throws Exception{
+    //     Page nextPage = loadNextPage(page);
+    //     System.out.println(page.getPath());
+    //     if (page.getNum() == 1 && nextPage == null){
+    //         return;
+    //     }
+
+    //     int num = page.getNum();
+    //     File pageToDelete = new File(page.getPath());
+    //     pageToDelete.delete();
+
+    //     while (nextPage != null){
+    //         page = nextPage;
+    //         System.out.println(page.getNum());
+    //         page.setNum(num);
+    //         page.save();
+    //         num++;
+    //         nextPage = loadNextPage(nextPage);
+    //     }
+    //     pageToDelete = new File(page.getPath());
+    //     System.out.println(page.getPath());
+    //     pageToDelete.delete();
+    // }
+
+
     public void deletePage(Page page) throws Exception{
         Page nextPage = loadNextPage(page);
-        if (page.getNum() == 1 && nextPage == null){
-            return;
-        }
-
-        int num = page.getNum();
         File pageToDelete = new File(page.getPath());
         pageToDelete.delete();
+        while(nextPage != null){
+            Page pageAfter = loadNextPage(nextPage);
+            File oldName = new File(nextPage.getPath());
+            nextPage.setNum(nextPage.getNum()-1);
+            File newName = new File(nextPage.getPath());
+            oldName.renameTo(newName);
+            nextPage.save();
+            nextPage = pageAfter;
 
-        while (nextPage != null){
-            page = nextPage;
-            page.setNum(num);
-            page.save();
-            num++;
-            nextPage = loadNextPage(nextPage);
         }
-        pageToDelete = new File(page.getPath());
-        pageToDelete.delete();
+
+        
+    }
+
+
+    public Page loadLastPage(){
+        Page page = loadFirstPage();
+        Page nextPage = loadNextPage(page);
+        while (nextPage!=null) {
+            page = nextPage;
+            nextPage = loadNextPage(page);
+        }
+
+        return page;
     }
 }

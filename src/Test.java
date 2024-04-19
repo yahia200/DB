@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.*;
 
 public class Test {
@@ -13,6 +14,7 @@ public class Test {
             }
             Table t = new Table(strTableName, strClusteringKeyColumn, htblColNameType);
             this.tables.add(t);
+            saveCSV();
             return t;
         }
         catch (DBAppException e){
@@ -37,6 +39,15 @@ public class Test {
                 break;
             }
         }
+    }
+
+
+    public void saveCSV() throws IOException{
+        ArrayList<String[]> meta = new ArrayList<>() ;
+        for (Table table : tables){
+            meta.addAll(table.getMeta());
+        }
+        csv.saveCSV(meta);
     }
 
     public void insertIntoTable(String strTableName,
