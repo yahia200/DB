@@ -14,8 +14,8 @@ public class IntEntry extends Entry {
     public IntEntry createEntry(Object value){return new IntEntry(getName(), (int)value);
     }
 
-    @Override
-    public double getValue() {
+
+    public Comparable getValue() {
         return value;
     }
 

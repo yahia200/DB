@@ -1,12 +1,8 @@
 public class StrEntry extends Entry {
     private String value;
 
-    public double getValue() {
-        int ascii = 0;
-        for(int i=0;i<value.length();i++) {
-            ascii += (int) value.charAt(i);
-        }
-        return ascii;
+    public String getValue() {
+        return value;
     }
 
     public void setValue(String value) {

@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import BTree.*;
 
 public class CSVHandler {
 
@@ -41,7 +42,7 @@ public class CSVHandler {
     public Vector<Table> ReadCSV() throws Exception{
         ArrayList<ArrayList<Object>> tables = new ArrayList<>();
         Vector<Table> res = new Vector<>();
-        Vector<BPlusTree> indecies = new Vector<>();
+        Vector<BTree> indecies = new Vector<>();
         tables.add(new ArrayList<>());
         String csvFile = "Meta-Data.csv";
         String line;
@@ -73,9 +74,8 @@ public class CSVHandler {
             for (String[ ] record : records){
                 if(table.contains(record[0])){
                     if(!record[5].equalsIgnoreCase("null")){
-                        BPlusTree index = loadIndex(record[4], record[0]);
+                        BTree index = loadIndex(record[4], record[0]);
                         indecies.add(index);
-                        System.out.println("index not null");
                     }
                     if (record[2].equalsIgnoreCase("java.lang.Integer")) {
                         ((Vector<Entry>)table.get(1)).add(new IntEntry((record[1]), 0));
@@ -97,7 +97,7 @@ public class CSVHandler {
 
         for (ArrayList<Object> table : tables){
             Table newTable = new Table((String)table.get(0), (Vector<Entry>)table.get(1), (String)table.get(2));
-            for(BPlusTree index : indecies){
+            for(BTree index : indecies){
                 if (index.tableName.equalsIgnoreCase(newTable.getName())){
                     newTable.addIndex(index);
                     System.out.println("foundIndex");
@@ -112,10 +112,10 @@ public class CSVHandler {
 
     }
 
-    public BPlusTree loadIndex(String indexName, String tableName) throws Exception{
+    public BTree loadIndex(String indexName, String tableName) throws Exception{
         FileInputStream fileIn = new FileInputStream(indexName + "_" + tableName + ".class");
         ObjectInputStream in = new ObjectInputStream(fileIn);
-        BPlusTree index = (BPlusTree) in.readObject();
+        BTree index = (BTree) in.readObject();
         in.close();
         fileIn.close();
         return index;

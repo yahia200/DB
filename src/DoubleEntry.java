@@ -1,7 +1,7 @@
 public class DoubleEntry extends Entry {
     private double value;
 
-    public double getValue() {
+    public Comparable getValue() {
         return value;
     }
 
