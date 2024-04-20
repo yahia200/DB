@@ -32,6 +32,24 @@ public class PageHandler {
         return page;
     }
 
+    public void savePageNum(int pageNum) throws Exception {
+        Page page = loadFirstPage();
+        while(page.getNum()!= pageNum && page != null){
+            page = loadNextPage(page);
+        }
+        if(page!=null)
+            page.save();
+    }
+
+    public Page loadPageNum(int pageNum) throws Exception {
+        Page page = loadFirstPage();
+        while(page.getNum()!= pageNum && page != null){
+            page = loadNextPage(page);
+        }
+        if(page!=null)
+            return page;
+        return null;
+    }
 
     public Page loadFirstPage(){
         Page page = null;

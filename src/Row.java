@@ -51,11 +51,11 @@ public class Row implements Serializable{
         for (Entry column : columns) {
             if (column.getName().equals(attribute.getName())) {
                 if (colValue.equals("java.lang.Integer")) {
-                   column=new IntEntry(column.getName(),(int)colValue);
+                    ((IntEntry)column).setValue((int)colValue);
                 } else if (colValue.equals("java.lang.String")) {
-                    column=new StrEntry(column.getName(),(String)colValue);
+                    ((StrEntry)column).setValue((String)colValue);
                 } else if (colValue.equals("java.lang.double")) {
-                    column=new DoubleEntry(column.getName(),(Double)colValue);
+                    ((DoubleEntry)column).setValue((Double)colValue);
                 }
                 break;
             }

@@ -5,7 +5,6 @@ import java.util.*;
 
 public class BPlusTree implements Serializable{
 
-  private static final long serialVersionUID = 354296046238492000;
   boolean d = false;
   String tableName;
   String colName;

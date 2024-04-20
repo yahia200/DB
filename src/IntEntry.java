@@ -25,7 +25,12 @@ public class IntEntry extends Entry {
         return this.value+"";
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     public String getType(){
         return "java.lang.Integer";
     }
+
 }

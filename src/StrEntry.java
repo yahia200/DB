@@ -30,4 +30,6 @@ public class StrEntry extends Entry {
     public String getType(){
         return "java.lang.String";
     }
+
+
 }
