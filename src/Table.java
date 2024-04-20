@@ -152,12 +152,10 @@ public class Table {
 
     private boolean InPage(Page page, Hashtable<String, Object> ht) throws Exception {
         Page nextPage = ph.loadNextPage(page);
+        if(binarySearch((Serializable) ht.get(PK)) != null)
+            return true;
         for (Row row : page.getRows()) {
             int diff = compare(ht.get(PK), row.PK);
-            if (diff == 0) {
-                System.out.println("Duplicate");
-                return true;
-            }
             if (diff < 0) {
                 Row newRow = getNewRow(ht);
                 addToPage(page.getRows().indexOf(row), newRow, page);
@@ -261,6 +259,7 @@ public class Table {
     void updateTable(String strClusteringKeyValue, Hashtable<String, Object> htblColNameValue) throws Exception {
         boolean rowFound = false;
         int pageNum=-1;
+        int rowInd = -1;
         Row row = null;
         Object[] keys = htblColNameValue.keySet().toArray();
         for(Object att : keys){
@@ -275,13 +274,14 @@ public class Table {
         if (row == null) {
             while (page != null) {
                 row = binarySearch(strClusteringKeyValue);
+                rowInd = binarySearchIndex(strClusteringKeyValue);
 
-                if(row!=null)
+                if(row!=null || rowInd != -1)
                     break;
             }
         }
 
-        if (row != null) {
+        if (row != null || rowInd !=-1) {
             rowFound = true;
             for (Map.Entry<String, Object> entry : htblColNameValue.entrySet()) {
                 String colName = entry.getKey();
@@ -289,9 +289,10 @@ public class Table {
 
                 for (Entry attribute : attributes) {
                     if (colName.equals(attribute.getName())) {
-                        row.update(attribute, colValue);
                         pageNum= row.getPageNum();
-                        ph.savePageNum(pageNum);
+                        Page p = ph.loadPageNum(pageNum);
+                        p.getRows().get(rowInd).update(attribute, colValue);
+                        p.save();
                         break;
                     }
                 }
@@ -320,13 +321,13 @@ public class Table {
 
     private int compare(Object o1, Object o2) {
         if (o1 instanceof Integer) {
-            int t = Integer.parseInt((String)o2);
+            if(o2 instanceof String)
+                o2 = Integer.parseInt((String) o2);
             return (int) o1 - (int) o2;
         }
         else if (o1 instanceof String)
             return ((String) o1).compareToIgnoreCase((String) o2);
         else if (o1 instanceof Double) {
-            Double t = Double.parseDouble((String)o2);
             return ((Double) o1).compareTo((Double) o2);
         }
         return 0;
@@ -370,35 +371,38 @@ public class Table {
                 page.save();
             }
         }
-
+        boolean pkRemoved = false;
         while (iterator.hasNext()) {
             Object value = iterator.next();
             System.out.println("Deleting rows with value: " + value);
             Page page = ph.loadFirstPage();
-            if (ht.get(PK) !=null){
+            if (ht.get(PK) !=null && !pkRemoved){
                 Object pk = ht.get(PK);
                 page.getRows().remove(binarySearch((Serializable) pk));
+                System.out.println("binaryyyyyyyy");
+                pkRemoved = true;
                 if (page.size() == 0)
                     pagesToDelete.add(page);
                 page.save();
             }
             else {
-            while (page != null) {
-                for (int i = 0; i < page.getRows().size(); i++) {
-                    for (int j = 0; j < this.attributes.size(); j++) {
-                        if (value.toString().equalsIgnoreCase(page.getRows().get(i).getColumns().get(j).toString())) {
-                            System.out.println("Deleting row with index: " + i);
-                            page.getRows().remove(i);
-                            if (page.size() == 0)
-                                pagesToDelete.add(page);
-                            page.save();
-                            break;
+                while (page != null) {
+                    for (int i = 0; i < page.getRows().size(); i++) {
+                        for (int j = 0; j < this.attributes.size(); j++) {
+                            if (value.toString().equalsIgnoreCase(page.getRows().get(i).getColumns().get(j).toString())) {
+                                System.out.println("Deleting row with index: " + i);
+                                page.getRows().remove(i--);
+                                if (page.size() == 0)
+                                    pagesToDelete.add(page);
+                                page.save();
+                                break;
+                            }
                         }
                     }
-                }
-                page = ph.loadNextPage(page);
+                    page = ph.loadNextPage(page);
 
-            }}
+                }
+            }
         }
 
         for (Page pageToDelete : pagesToDelete)
@@ -427,13 +431,13 @@ public class Table {
         Page page = ph.loadFirstPage();
         while (page != null) {
             int l = 0;
-            int r = page.size();
+            int r = page.size()-1;
             while (compare(l, r) <= 0) {
                 int mid = (l + r) / 2;
 
                 // If the element is present at the
                 // middle itself
-                if (page.getRows().get(mid) == pk) {
+                if (compare(page.getRows().get(mid).PK,pk)==0) {
                     return page.getRows().get(mid);
 
                     // If element is smaller than mid, then
@@ -452,8 +456,46 @@ public class Table {
 
             // We reach here when element is not present
             //  in array
+            page = ph.loadNextPage(page);
         }
         return null;
+
+
+    }
+
+
+    public int binarySearchIndex(Serializable pk) {
+        Page page = ph.loadFirstPage();
+        while (page != null) {
+            int l = 0;
+            int r = page.size()-1;
+            while (compare(l, r) <= 0) {
+                int mid = (l + r) / 2;
+
+                // If the element is present at the
+                // middle itself
+                if (compare(page.getRows().get(mid).PK,pk)==0) {
+                    return mid;
+
+                    // If element is smaller than mid, then
+                    // it can only be present in left subarray
+                    // so we decrease our r pointer to mid - 1
+                } else if (compare(page.getRows().get(mid), pk) > 0) {
+                    r = mid - 1;
+
+                    // Else the element can only be present
+                    // in right subarray
+                    // so we increase our l pointer to mid + 1
+                } else {
+                    l = mid + 1;
+                }
+            }
+
+            // We reach here when element is not present
+            //  in array
+            page = ph.loadNextPage(page);
+        }
+        return -1;
 
 
     }

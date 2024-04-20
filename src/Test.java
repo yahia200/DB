@@ -216,13 +216,13 @@ public class Test {
 //     		return res.iterator();
 //     	}
 //     }
-//public void updateTable(String strTableName,
-//                        String strClusteringKeyValue,
-//                        Hashtable<String,Object> htblColNameValue   )  throws DBAppException{
-//
-//    for(Table table :tables){
-//        if(table.getName().equalsIgnoreCase(strTableName))
-//            table.updateTable(strClusteringKeyValue,htblColNameValue);
-//    }
-//}
+public void updateTable(String strTableName,
+                        String strClusteringKeyValue,
+                        Hashtable<String,Object> htblColNameValue   ) throws Exception {
+
+    for(Table table :tables){
+        if(table.getName().equalsIgnoreCase(strTableName))
+            table.updateTable(strClusteringKeyValue,htblColNameValue);
+    }
+}
 }

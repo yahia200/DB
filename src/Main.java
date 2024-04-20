@@ -14,14 +14,15 @@ public class Main {
         htblColNameType.put("id", "java.lang.Integer");
         htblColNameType.put("name", "java.lang.String");
         htblColNameType.put("gpa", "java.lang.double");
-        Table t =test.createTable( strTableName, "id", htblColNameType );
-//        //test.createIndex(strTableName, "id", "idIndex");
+        //Table t =test.createTable( strTableName, "id", htblColNameType );
+//        test.createIndex(strTableName, "id", "idIndex");
 //        //test.saveCSV();
 //        //Table t2 =test.createTable( strTableName+"test", "id", htblColNameType );
-//insert();
-//        //delete();
-    //test.tables.get(0).pp();
-//        //test.tables.get(1).pp();
+        insert();
+        test.tables.get(0).pp();
+        delete();
+        update();
+        test.tables.get(0).pp();
 //        //System.out.println(test.tables.size());
 //        //test.tables.get(0).printInd();
 //
@@ -33,11 +34,19 @@ public class Main {
 
     }
 
+    public static void update() throws Exception {
+        Hashtable<String, Object> tester = new Hashtable<>();
+        tester.put("gpa", 1.5);
+        tester.put("name", "Zahran9");
+        test.updateTable("Student","4",tester);
+    }
+
     public static void delete() throws Exception{
          Hashtable<String, Object> tester = new Hashtable<>();
-        tester.put("id", 4);
         tester.put("gpa", 1.5);
-        tester.put("name", "Dalia Noor");
+        tester.put("name", "Zaky16");
+        tester.put("id", 6);
+
         test.deleteFromTable("Student",tester);
     }
 

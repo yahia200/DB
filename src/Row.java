@@ -50,11 +50,11 @@ public class Row implements Serializable{
      public void update(Entry attribute, Object colValue) {
         for (Entry column : columns) {
             if (column.getName().equals(attribute.getName())) {
-                if (colValue.equals("java.lang.Integer")) {
+                if (colValue instanceof Integer) {
                     ((IntEntry)column).setValue((int)colValue);
-                } else if (colValue.equals("java.lang.String")) {
+                } else if (colValue instanceof String) {
                     ((StrEntry)column).setValue((String)colValue);
-                } else if (colValue.equals("java.lang.double")) {
+                } else if (colValue instanceof Double) {
                     ((DoubleEntry)column).setValue((Double)colValue);
                 }
                 break;
