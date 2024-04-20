@@ -6,25 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="9876104e-982c-440d-93dc-dafa90c09dc7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Meta-Data.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Meta-Data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Meta-Data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Student_2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_7.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_8.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Student_9.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Studenttest_1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gpaIndex_Student.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BPlusTree.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/idIndex_Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/idIndex_Student.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CSVHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CSVHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DoubleEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DoubleEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IntEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IntEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StrEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/StrEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DBApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DBApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Test.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Test.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +39,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.DBApp.executor": "Run",
     "Application.Main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -70,7 +62,14 @@
       <recent name="C:\Users\loaym\Documents\GitHub\src\DB3" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.DBApp">
+    <configuration name="DBApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DBApp" />
+      <module name="DB" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="DB" />
@@ -80,6 +79,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DBApp" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -102,6 +102,7 @@
       <workItem from="1713476574550" duration="2922000" />
       <workItem from="1713619023860" duration="1861000" />
       <workItem from="1713628425074" duration="18900000" />
+      <workItem from="1713647570420" duration="4239000" />
     </task>
     <servers />
   </component>
@@ -112,24 +113,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Row.java</url>
-          <line>49</line>
-          <properties class="Row" method="update">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Table.java</url>
-          <line>260</line>
-          <properties class="Table" method="updateTable">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/PageHandler.java</url>
           <line>34</line>
           <properties class="PageHandler" method="savePageNum">
@@ -137,15 +120,6 @@
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/Test.java</url>
-          <line>85</line>
-          <properties class="Test" method="selectFromTableHelper">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/BTree/BTreeLeafNode.java</url>

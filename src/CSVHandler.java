@@ -100,7 +100,6 @@ public class CSVHandler {
             for(BTree index : indecies){
                 if (index.tableName.equalsIgnoreCase(newTable.getName())){
                     newTable.addIndex(index);
-                    System.out.println("foundIndex");
                 }
             }
             res.add(newTable);

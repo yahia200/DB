@@ -11,17 +11,6 @@ public class Table {
     private Vector<BTree> indices = new Vector<BTree>();
     Hashtable<String, String> htblColNameType;
 
-    //! Test
-    public void pp() throws Exception {
-        Page page = ph.loadFirstPage();
-        while (page != null) {
-            if (page.size() > 0)
-                System.out.println(page.toString());
-            else
-                System.out.println("Empty page");
-            page = ph.loadNextPage(page);
-        }
-    }
 
     public void addIndex(BTree index) {
         this.indices.add(index);
@@ -74,7 +63,6 @@ public class Table {
 
     public Table(String name, Vector<Entry> entries, String PK) throws Exception {
         this.name = name;
-        System.out.println(this.name);
         this.PK = PK;
         this.attributes = entries;
         ph.setName(this.name);
@@ -217,13 +205,18 @@ public class Table {
 
     public BTree createIndex(String strColName, String strIndexName) throws Exception {
         Page page = ph.loadFirstPage();
+        ArrayList<Row> rows = new ArrayList<>();
         BTree tree = new BTree(strIndexName, strColName, this.name);
         while (page != null) {
             for (Row row : page.getRows()) {
                 if (row != null) {
+                    rows.add(row);
                     Entry e = row.getEntry(strColName);
-                    tree.insert(e.getValue(), row);
-                    tree.insert(e.getValue(), row);
+                    if (tree.search(e.getValue()) != null){
+                        ((Vector<Row>)tree.search(e.getValue())).add(row);
+                    }
+                    else
+                        tree.insert(e.getValue(), rows);
                 }
             }
             page = ph.loadNextPage(page);
@@ -364,8 +357,7 @@ public class Table {
         }
 
         public void deleteFromTable (Hashtable < String, Object > ht) throws Exception {
-            Row row = null;
-            System.out.println("ht: " + ht);
+            ArrayList<Row> rows = new ArrayList<>();
             Iterator<Object> iterator = ht.values().iterator();
             ArrayList<Page> pagesToDelete = new ArrayList<>();
 
@@ -373,23 +365,23 @@ public class Table {
             for (Object att : keys) {
                 BTree index = checkIndex((String) att);
                 if (index != null) {
-                    row = (Row) index.search((Comparable) ht.get(att));
-                    Page page = ph.loadPageNum(row.getPageNum());
-                    page.getRows().remove(row);
-                    if (page.size() == 0)
-                        pagesToDelete.add(page);
-                    page.save();
+                    rows = (ArrayList<Row>) index.search((Comparable) ht.get(att));
+                    for (Row row : rows){
+                        Page page = ph.loadPageNum(row.getPageNum());
+                        page.getRows().remove(row);
+                        if (page.size() == 0)
+                            pagesToDelete.add(page);
+                        page.save();
+                    }
                 }
             }
             boolean pkRemoved = false;
             while (iterator.hasNext()) {
                 Object value = iterator.next();
-                System.out.println("Deleting rows with value: " + value);
                 Page page = ph.loadFirstPage();
                 if (ht.get(PK) != null && !pkRemoved) {
                     Object pk = ht.get(PK);
                     page.getRows().remove(binarySearch((Serializable) pk));
-                    System.out.println("binaryyyyyyyy");
                     pkRemoved = true;
                     if (page.size() == 0)
                         pagesToDelete.add(page);
@@ -399,7 +391,6 @@ public class Table {
                         for (int i = 0; i < page.getRows().size(); i++) {
                             for (int j = 0; j < this.attributes.size(); j++) {
                                 if (value.toString().equalsIgnoreCase(page.getRows().get(i).getColumns().get(j).toString())) {
-                                    System.out.println("Deleting row with index: " + i);
                                     page.getRows().remove(i--);
                                     if (page.size() == 0)
                                         pagesToDelete.add(page);
@@ -425,6 +416,7 @@ public class Table {
                 if (index.getColName().equalsIgnoreCase(col))
                     return index.getName() + ",B+tree";
             }
+
             return "null,null";
         }
 

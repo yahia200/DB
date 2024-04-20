@@ -14,7 +14,7 @@ public class PageHandler {
             String filePath = this.name + "_" + (""+(p.getNum()+1)) + ".class";
             page = Page.load(filePath);
         }catch(Exception e){
-            //System.out.println("Cant load  next page");
+            //ln("Cant load  next page");
         }
         return page;
     }
@@ -27,7 +27,7 @@ public class PageHandler {
             String filePath = this.name + "_" + (""+(p.getNum()-1)) + ".class";
             page = Page.load(filePath);
         }catch(Exception e){
-            //System.out.println("Cant load  prev page");
+            //ln("Cant load  prev page");
         }
         return page;
     }
@@ -43,7 +43,7 @@ public class PageHandler {
 
     public Page loadPageNum(int pageNum) throws Exception {
         Page page = loadFirstPage();
-        while(page.getNum()!= pageNum && page != null){
+        while(page != null && page.getNum()!= pageNum){
             page = loadNextPage(page);
         }
         if(page!=null)
