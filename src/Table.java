@@ -205,7 +205,7 @@ public class Table {
 
     public BTree createIndex(String strColName, String strIndexName) throws Exception {
         Page page = ph.loadFirstPage();
-        ArrayList<Row> rows = new ArrayList<>();
+        Vector<Row> rows = new Vector<>();
         BTree tree = new BTree(strIndexName, strColName, this.name);
         while (page != null) {
             for (Row row : page.getRows()) {

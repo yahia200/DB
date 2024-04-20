@@ -2,10 +2,12 @@
 /** * @author Wael Abouelsaadat */ 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Properties;
 
 
 public class DBApp {
@@ -28,6 +30,7 @@ public class DBApp {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+
 	}
 
 
@@ -356,7 +359,7 @@ public class DBApp {
 	try{
 			String strTableName = "Student";
 			DBApp	dbApp = new DBApp( );
-			
+			dbApp.init();
 			Hashtable htblColNameType = new Hashtable( );
 			htblColNameType.put("id", "java.lang.Integer");
 			htblColNameType.put("name", "java.lang.String");
