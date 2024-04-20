@@ -252,7 +252,7 @@ public class Table {
         for (Object key : keys) {
             for (BPlusTree index : indices) {
                 if (((String) key).equalsIgnoreCase(index.getColName())) {
-                    index.insert(ht.get(key), row);
+                    index.insert((Serializable)ht.get(key), row);
                     index.save();
                     break;
                 }
@@ -265,12 +265,13 @@ public class Table {
         for (Object key : keys) {
             for (BPlusTree index : indices) {
                 if (((String) key).equalsIgnoreCase(index.getColName())) {
-                    index.remove(ht.get(key));
+                    index.remove((Serializable) ht.get(key));
                     break;
                 }
             }
         }
     }
+    
 
     
 
@@ -280,7 +281,15 @@ public class Table {
 
     
 
-    private int compare(Object o1, Object o2) {
+    public PageHandler getPh() {
+		return ph;
+	}
+
+	public void setPh(PageHandler ph) {
+		this.ph = ph;
+	}
+
+	private int compare(Object o1, Object o2) {
         if (o1 instanceof Integer)
             return  (int)o1 - (int)o2;
         else if (o1 instanceof String)

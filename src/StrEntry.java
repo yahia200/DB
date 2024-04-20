@@ -1,7 +1,7 @@
 public class StrEntry extends Entry {
     private String value;
 
-    public int getValue() {
+    public double getValue() {
         int ascii = 0;
         for(int i=0;i<value.length();i++) {
             ascii += (int) value.charAt(i);
