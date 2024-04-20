@@ -15,7 +15,7 @@ public class IntEntry extends Entry {
     }
 
     @Override
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 

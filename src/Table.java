@@ -317,6 +317,7 @@ public class Table {
             }
         }
     }
+    
 
 
     private int compare(Object o1, Object o2) {
@@ -325,6 +326,17 @@ public class Table {
                 o2 = Integer.parseInt((String) o2);
             return (int) o1 - (int) o2;
         }
+    public PageHandler getPh() {
+		return ph;
+	}
+
+	public void setPh(PageHandler ph) {
+		this.ph = ph;
+	}
+
+	private int compare(Object o1, Object o2) {
+        if (o1 instanceof Integer)
+            return  (int)o1 - (int)o2;
         else if (o1 instanceof String)
             return ((String) o1).compareToIgnoreCase((String) o2);
         else if (o1 instanceof Double) {

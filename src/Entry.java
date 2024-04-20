@@ -18,7 +18,7 @@ public abstract class Entry implements Serializable{
 
     public abstract Entry createEntry(Object o);
 
-    public abstract int getValue();
+    public abstract double getValue();
 
     public abstract String getType();
 
