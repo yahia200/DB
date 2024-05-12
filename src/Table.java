@@ -5,7 +5,7 @@ import BTree.*;
 public class Table {
     private CSVHandler csv = new CSVHandler();
     private PageHandler ph = new PageHandler(this.name);
-    private static final int MAX_PAGE_SIZE = 4;
+    private static final int MAX_PAGE_SIZE = 10;
     private String PK;
     private String name;
     private Vector<BTree> indices = new Vector<BTree>();
@@ -145,6 +145,9 @@ public class Table {
             return true;
         for (Row row : page.getRows()) {
             int diff = compare(ht.get(PK), row.PK);
+            if(diff == 0)
+                    return true;
+
             if (diff < 0) {
                 Row newRow = getNewRow(ht);
                 addToPage(page.getRows().indexOf(row), newRow, page);

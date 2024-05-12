@@ -182,12 +182,22 @@ public class DBApp {
 
 
 	public ArrayList<Row> OR(ArrayList<Row>r1,ArrayList<Row>r2){
+		boolean dup = false;
 		ArrayList<Row> r3 = new ArrayList<>();
-		r3.clear();
 		r3.addAll(r1);
-		r1.retainAll(r2);
-		r3.removeAll(r1);
-		r3.addAll(r2);
+		for(Row row :r2 ){
+			for(Row row2 : r3){
+				if(row.PK.equals(row2.PK)){
+					dup = true;
+					break;
+				}
+			}
+			if(!dup){
+				r3.add(row);
+				dup = false;
+			}
+
+		}
 		return r3;
 	}
 	public ArrayList<Row> AND(ArrayList<Row>r1,ArrayList<Row>r2){
@@ -405,13 +415,12 @@ public class DBApp {
 			arrSQLTerms[0]._strTableName =  "Student";
 			arrSQLTerms[0]._strColumnName=  "name";
 			arrSQLTerms[0]._strOperator  =  "=";
-			arrSQLTerms[0]._objValue     =  "John Noor";
+			arrSQLTerms[0]._objValue     =  "Zaky Noor";
 
 			arrSQLTerms[1]._strTableName =  "Student";
 			arrSQLTerms[1]._strColumnName=  "gpa";
 			arrSQLTerms[1]._strOperator  =  "=";
 			arrSQLTerms[1]._objValue     =  new Double( 1.5 );
-
 			String[]strarrOperators = new String[1];
 			strarrOperators[0] = "OR";
 			// select * from Student where name = "John Noor" or gpa = 1.5;
